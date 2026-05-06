@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="-apple-system,BlinkMacSystemFont,Hiragino Kaku Gothic ProN,Yu Gothic Medium,Meiryo,sans-serif">
+  <style>
+    .title { font-size: 16px; font-weight: 700; fill: #0a0e27; }
+    .hub-name { font-size: 14px; font-weight: 700; fill: #ffffff; }
+    .hub-sub { font-size: 11px; fill: #ffffff; opacity: 0.9; }
+    .svc-name { font-size: 13px; font-weight: 700; fill: #0a0e27; }
+    .svc-sub { font-size: 11px; fill: #475569; }
+    .svc-icon { font-size: 16px; font-weight: 800; fill: #0078D4; }
+  </style>
+
+  <text x="450" y="30" class="title" text-anchor="middle">図1：Microsoft Foundry を中心に置いた Azure AI サービスマップ</text>
+
+  <!-- 中心ハブ -->
+  <line x1="450" y1="310" x2="450" y2="120" stroke="#0078D4" stroke-width="1.5"/>
+  <line x1="450" y1="310" x2="700" y2="200" stroke="#0078D4" stroke-width="1.5"/>
+  <line x1="450" y1="310" x2="700" y2="430" stroke="#0078D4" stroke-width="1.5"/>
+  <line x1="450" y1="310" x2="450" y2="500" stroke="#0078D4" stroke-width="1.5"/>
+  <line x1="450" y1="310" x2="200" y2="430" stroke="#0078D4" stroke-width="1.5"/>
+  <line x1="450" y1="310" x2="200" y2="200" stroke="#0078D4" stroke-width="1.5"/>
+
+  <!-- 中心：Microsoft Foundry -->
+  <rect x="370" y="270" width="160" height="80" rx="12" fill="#0078D4" stroke="#005a9e" stroke-width="2"/>
+  <text x="450" y="304" class="hub-name" text-anchor="middle">Microsoft Foundry</text>
+  <text x="450" y="324" class="hub-sub" text-anchor="middle">統合プラットフォーム</text>
+
+  <!-- 上：Foundry Models -->
+  <rect x="380" y="80" width="140" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="395" y="110" class="svc-icon">M</text>
+  <text x="450" y="120" class="svc-name" text-anchor="middle">Foundry Models</text>
+  <text x="450" y="140" class="svc-sub" text-anchor="middle">gpt-5系・Llama・他</text>
+
+  <!-- 右上：Foundry Agent Service -->
+  <rect x="630" y="160" width="180" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="645" y="190" class="svc-icon">A</text>
+  <text x="720" y="200" class="svc-name" text-anchor="middle">Foundry Agent Service</text>
+  <text x="720" y="220" class="svc-sub" text-anchor="middle">エージェント実行・Tool Catalog</text>
+
+  <!-- 右下：Azure AI Search -->
+  <rect x="630" y="390" width="180" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="645" y="420" class="svc-icon">S</text>
+  <text x="720" y="430" class="svc-name" text-anchor="middle">Azure AI Search</text>
+  <text x="720" y="450" class="svc-sub" text-anchor="middle">ベクトル検索 / RAG</text>
+
+  <!-- 下：Foundry IQ -->
+  <rect x="370" y="460" width="160" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="385" y="490" class="svc-icon">IQ</text>
+  <text x="450" y="500" class="svc-name" text-anchor="middle">Foundry IQ / File Search</text>
+  <text x="450" y="520" class="svc-sub" text-anchor="middle">引用付き知識統合</text>
+
+  <!-- 左下：Document Intelligence -->
+  <rect x="90" y="390" width="180" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="105" y="420" class="svc-icon">DI</text>
+  <text x="180" y="430" class="svc-name" text-anchor="middle">Document Intelligence</text>
+  <text x="180" y="450" class="svc-sub" text-anchor="middle">帳票・契約書の構造抽出</text>
+
+  <!-- 左上：Content Understanding -->
+  <rect x="90" y="160" width="180" height="80" rx="8" fill="#ffffff" stroke="#0078D4" stroke-width="2"/>
+  <text x="105" y="190" class="svc-icon">CU</text>
+  <text x="180" y="200" class="svc-name" text-anchor="middle">Content Understanding</text>
+  <text x="180" y="220" class="svc-sub" text-anchor="middle">マルチモーダル文書解析</text>
+</svg>
