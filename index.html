@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BtoB大企業のAI投資はAzureへ／単価を上げる業務AI構築の最新ガイド</title>
+<meta name="description" content="BtoB大企業のAI基盤はAzureが主流です。Microsoft Foundryで何ができるか、Azureならではの装備、約2時間で組んだ家族用AIエージェントの実装例まで、構成図とサンプルコードでまとめた一冊。">
+<meta property="og:title" content="BtoB大企業のAI投資はAzureへ／単価を上げる業務AI構築の最新ガイド">
+<meta property="og:description" content="Microsoft Foundryで何ができるか、Azureならではの装備、約2時間で組んだ家族用AIエージェントの実装例まで網羅した一冊。">
+<meta property="og:image" content="assets/cover_main.png">
+<meta property="og:type" content="article">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=VT323&family=DotGothic16&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
+  --bg-deep: #0f1429;
+  --text: #1f2937;
+  --text-muted: #6b7280;
+  --heading: #0a0e27;
+  --accent: #0078D4;
+  --accent-dark: #005a9e;
+  --accent-soft: #eff6ff;
+  --accent-border: #bfdbfe;
+  --note-yellow-bg: #fef9c3;
+  --note-yellow-border: #ca8a04;
+  --note-orange-bg: #ffedd5;
+  --note-orange-border: #ea580c;
+  --note-gray-bg: #f1f5f9;
+  --note-gray-border: #64748b;
+  --border: #e5e7eb;
+  --pixel-purple: #4a1a4a;
+  --pixel-coral: #e07a6a;
+  --pixel-peach: #f4b890;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", Meiryo, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img { max-width: 100%; height: auto; display: block; image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; }
+img.smooth { image-rendering: auto; }
+
+a { color: var(--accent); text-decoration: none; transition: color .15s; }
+a:hover { color: var(--accent-dark); text-decoration: underline; }
+
+/* === Hero === */
+.hero {
+  width: 100%;
+  background: var(--bg-deep);
+  position: relative;
+  overflow: hidden;
+}
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* === FREE GUIDE intro === */
+.intro {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 64px 24px 48px;
+}
+.intro-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.intro h1 {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.5;
+  color: var(--heading);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.intro h1 .accent {
+  color: var(--accent);
+}
+.intro-subtitle {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text);
+  margin-bottom: 40px;
+}
+
+.author-card {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px;
+  background: var(--bg-soft);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.author-card img {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+}
+.author-card .author-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--heading);
+  margin-bottom: 6px;
+}
+.author-card .author-role {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.author-card .author-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.note-box {
+  margin: 24px 0 0;
+  padding: 16px 20px;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.note-box .note-label {
+  display: block;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+/* === Sunset divider === */
+.divider-sunset {
+  width: 100%;
+  margin: 0;
+  background: var(--bg-deep);
+}
+.divider-sunset img {
+  width: 100%;
+  display: block;
+}
+
+/* === Sections === */
+.section {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+.section-number {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+.section-title {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.5;
+  color: var(--heading);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.section-subtitle {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+.section-lead {
+  font-size: 15px;
+  line-height: 1.95;
+  margin-bottom: 24px;
+}
+.section h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--heading);
+  margin: 32px 0 12px;
+}
+.section p {
+  font-size: 15px;
+  line-height: 1.95;
+  margin-bottom: 16px;
+}
+.section ul, .section ol {
+  margin: 12px 0 20px 24px;
+  font-size: 15px;
+  line-height: 1.9;
+}
+.section li { margin-bottom: 6px; }
+
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin: 28px 0 12px;
+}
+
+/* === Service cards === */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0 28px;
+}
+.service-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.service-card .ic {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  background: var(--accent-soft);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+.service-card .nm {
+  font-weight: 700;
+  color: var(--heading);
+}
+
+/* === Diagram placeholder === */
+.diagram-box {
+  margin: 24px 0 32px;
+  padding: 24px 20px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+.diagram-box img {
+  max-width: 100%;
+  margin: 0 auto;
+}
+.diagram-box .placeholder {
+  padding: 60px 20px;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.diagram-box .placeholder strong {
+  display: block;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+.diagram-caption {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* === Callout boxes === */
+.callout {
+  margin: 24px 0;
+  padding: 18px 22px;
+  border-left: 4px solid;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.callout .callout-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+.callout-blue {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+}
+.callout-blue .callout-label { color: var(--accent); }
+.callout-yellow {
+  background: var(--note-yellow-bg);
+  border-left-color: var(--note-yellow-border);
+}
+.callout-yellow .callout-label { color: #854d0e; }
+.callout-orange {
+  background: var(--note-orange-bg);
+  border-left-color: var(--note-orange-border);
+}
+.callout-orange .callout-label { color: #9a3412; }
+.callout-gray {
+  background: var(--note-gray-bg);
+  border-left-color: var(--note-gray-border);
+}
+.callout-gray .callout-label { color: #475569; }
+
+.callout ul {
+  margin: 8px 0 0 20px;
+}
+.callout li { margin-bottom: 4px; }
+
+/* === Loom embed === */
+.loom-wrap {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin: 24px 0 16px;
+  border-radius: 12px;
+  background: var(--bg-deep);
+  box-shadow: 0 4px 24px rgba(15, 20, 41, 0.15);
+}
+.loom-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+/* === Cost breakdown table === */
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
+  font-size: 14px;
+}
+.cost-table th, .cost-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.cost-table th {
+  font-weight: 700;
+  color: var(--heading);
+  background: var(--bg-soft);
+  font-size: 13px;
+}
+.cost-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.cost-table tr:last-child td {
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: none;
+  background: var(--accent-soft);
+}
+
+/* === Skyline footer banner === */
+.footer-banner {
+  width: 100%;
+  margin-top: 80px;
+  background: var(--bg-deep);
+}
+.footer-banner img {
+  width: 100%;
+  display: block;
+}
+
+/* === Site footer === */
+.site-footer {
+  background: var(--bg);
+  padding: 60px 24px 80px;
+}
+.site-footer-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.footer-headline {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.5;
+  color: var(--heading);
+  margin-bottom: 20px;
+}
+.footer-headline .accent {
+  color: var(--accent);
+}
+.footer-text {
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.tips-card {
+  margin: 28px 0;
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-soft);
+}
+.tips-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.tips-card .tips-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading);
+  margin-bottom: 12px;
+}
+.tips-card ol {
+  margin: 0 0 0 20px;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.contact-card {
+  margin: 28px 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+.contact-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.contact-card .contact-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading);
+  margin-bottom: 12px;
+}
+.contact-card p {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.contact-item {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+.contact-item .ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.contact-item.line .ic { background: #06C755; }
+.contact-item.x .ic { background: #000; }
+.contact-item .nm {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--heading);
+  margin-bottom: 4px;
+}
+.contact-item .desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.footer-author {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.footer-author img {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.footer-author-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--heading);
+  margin-bottom: 4px;
+}
+.footer-author-links {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--text-muted);
+}
+.footer-author-links a { color: var(--accent); }
+.footer-author-links .label { font-weight: 700; color: var(--text); }
+
+.created-mark {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 36px;
+  letter-spacing: 0.08em;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+}
+
+/* === Inline terminal accent === */
+.term {
+  font-family: 'VT323', 'DotGothic16', monospace;
+  font-size: 1.05em;
+  background: #0f1429;
+  color: #5fff5f;
+  padding: 1px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+
+/* === Responsive === */
+@media (max-width: 640px) {
+  .intro { padding: 40px 20px 32px; }
+  .intro h1 { font-size: 22px; }
+  .section { padding: 56px 20px; }
+  .section-title { font-size: 22px; }
+  .footer-headline { font-size: 22px; }
+  .author-card { flex-direction: column; align-items: center; text-align: center; }
+  .contact-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<header class="hero">
+  <img src="assets/cover_main.png" alt="BtoB大企業のAI投資はAzureへ／単価を上げる業務AI構築の最新ガイド" class="smooth">
+</header>
+
+<!-- ==================== FREE GUIDE INTRO ==================== -->
+<div class="intro">
+  <span class="intro-tag">FREE GUIDE</span>
+  <h1>
+    <span class="accent">BtoB大企業</span>のAI投資は<span class="accent">Azure</span>へ。<br>
+    単価を上げる業務AI構築の最新ガイド。
+  </h1>
+  <p class="intro-subtitle">
+    BtoB大企業の多くはWindows・MicrosoftのEnterprise契約を抱え、その延長でAzureがAI基盤の主流となっています。本資料ではAzure AIの中核となる<strong>Microsoft Foundry</strong>で何ができるかを軸に、認証・閉域・監視といったAzureならではの装備、約2時間で組み上げた家族用AIエージェントの実装例、そして日々のキャッチアップ術までを、構成図とサンプルコードを添えてまとめた一冊です。
+  </p>
+
+  <div class="author-card">
+    <img src="assets/character_syama.png" alt="しゃま">
+    <div>
+      <div class="author-name">しゃま</div>
+      <div class="author-role">フリーランス クラウド／インフラ／DevOpsエンジニア</div>
+      <div class="author-desc">
+        AWS・Azureの設計から障害対応まで一貫対応（IaC・CI/CD・Kubernetes）。<br>
+        クラウド系資格30個保有（Microsoft 10／AWS All Cert 2024 ほか）
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <span class="note-label">本資料の対象と進め方について</span>
+    本資料はあくまで「私はこう作りました」の構成紹介を中心にまとめたものです。サンプルコードと構成図を添えていますので、興味のある方はご自身でも試していただけます。完璧なハンズオン資料ではない旨、あらかじめご了承ください。
+  </div>
+</div>
+
+<!-- ==================== SUNSET DIVIDER ==================== -->
+<div class="divider-sunset">
+  <img src="assets/banner_sunset.png" alt="">
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<section class="section" id="section-1">
+  <span class="section-number">No. 01</span>
+  <h2 class="section-title">なぜBtoB大企業のAI投資はAzureなのか</h2>
+  <p class="section-subtitle">この資料を読むと、何が得られるか</p>
+
+  <p class="section-lead">
+    BtoB大企業の多くは、すでにWindowsやMicrosoft 365のEnterprise契約を会社単位で保有しています。Azureの利用契約も同じ枠組みに乗せられるケースが多く、「すでに契約があるから」という導入のしやすさから、AI基盤としてもAzureが選ばれることが圧倒的に多いのが実情です。
+  </p>
+  <p>
+    その結果、<strong>BtoB領域の高単価AI案件は構造的にAzureに集中</strong>しています。同じ「AIに触れるエンジニア」でも、Azureを軸に動けるかどうかで、狙える単価帯は一段変わってきます。本資料は、その流れに乗るための地図として書きました。
+  </p>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">この資料を読むと得られる4つのもの</span>
+    <ul>
+      <li>Azure AIサービスの全体像と、企業がBtoBで実際に使っている機能の輪郭</li>
+      <li>Azureならではの装備（認証・閉域・監視）の具体像</li>
+      <li>約2時間で組める家族用AIエージェントの実装例（構成図＋サンプルコード）</li>
+      <li>普段のキャッチアップの流れ（GAアナウンス→Learn→料金→画面で試す）</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-label">想定読者</span>
+    AIブームに乗ってキャリアを伸ばしたいエンジニア／業務でAIを扱う必要が出てきたインフラ・開発者／同じスキルでも単価帯を一段上げたい方を念頭に書いています。
+  </div>
+</section>
+
+<!-- ==================== SECTION 2 ==================== -->
+<section class="section" id="section-2">
+  <span class="section-number">No. 02</span>
+  <h2 class="section-title">Azure AIの全体像 ─ Microsoft Foundryで何ができるか</h2>
+  <p class="section-subtitle">2026年現在のAzure AI開発はFoundryに集約されています</p>
+
+  <p class="section-lead">
+    Azure AI Studio、Azure AI Foundry、Azure AI Servicesといった複数のサービス・ブランドは、現在<strong>Microsoft Foundry</strong>に統合されました。Azure OpenAIやSpeech、Vision、Languageもすべてこの傘の下で扱う形になっています。BtoB案件のAI開発は、ほぼこのFoundryの範囲内で完結すると考えてよいです。
+  </p>
+
+  <p class="section-label">主要サービスと、企業案件で実際に使われる機能</p>
+
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ic">F</div>
+      <div>
+        <div class="nm">Microsoft Foundry</div>
+        <div>プロジェクト管理／統合ハブ</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">M</div>
+      <div>
+        <div class="nm">Foundry Models</div>
+        <div>GPT・Llama等のモデル提供</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">A</div>
+      <div>
+        <div class="nm">Foundry Agent Service</div>
+        <div>エージェントの構築・実行</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">IQ</div>
+      <div>
+        <div class="nm">Foundry IQ</div>
+        <div>知識統合・引用付き回答</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">S</div>
+      <div>
+        <div class="nm">Azure AI Search</div>
+        <div>RAG用ベクトル検索</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">CU</div>
+      <div>
+        <div class="nm">Content Understanding</div>
+        <div>マルチモーダル文書解析</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">DI</div>
+      <div>
+        <div class="nm">Document Intelligence</div>
+        <div>帳票・契約書の構造抽出</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">SP</div>
+      <div>
+        <div class="nm">Speech / Vision</div>
+        <div>音声・画像認識（Foundry Tools）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="mxgraph" style="max-width:100%;background:#ffffff;border-radius:8px;" data-mxgraph='{"xml": "<mxfile host=\"app.diagrams.net\" modified=\"2026-05-06T13:00:00.000Z\" agent=\"claude\" version=\"24.0.0\" type=\"device\">\n<diagram name=\"Foundry Service Map\" id=\"foundry-map\">\n<mxGraphModel dx=\"1200\" dy=\"800\" grid=\"0\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"900\" pageHeight=\"600\" math=\"0\" shadow=\"0\" adaptiveColors=\"auto\">\n<root>\n<mxCell id=\"0\"/>\n<mxCell id=\"1\" parent=\"0\"/>\n<mxCell id=\"title\" value=\"図1：Microsoft Foundry を中心に置いた Azure AI サービスマップ\" style=\"text;html=1;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"80\" y=\"20\" width=\"740\" height=\"30\" as=\"geometry\"/></mxCell>\n<mxCell id=\"hub\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/AI_Studio.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"416\" y=\"270\" width=\"68\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"hub_label\" value=\"&lt;b&gt;Microsoft Foundry&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:11px;color:#475569&quot;&gt;統合プラットフォーム&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=12;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"340\" y=\"345\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"models\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Azure_OpenAI.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"416\" y=\"100\" width=\"68\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"models_label\" value=\"&lt;b&gt;Foundry Models&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;gpt-5系・Llama・他&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"340\" y=\"170\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"agent\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Bot_Services.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"700\" y=\"180\" width=\"68\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"agent_label\" value=\"&lt;b&gt;Foundry Agent Service&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;エージェント実行・Tool Catalog&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"630\" y=\"250\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"search\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/app_services/Search_Services.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"704\" y=\"380\" width=\"68\" height=\"49\" as=\"geometry\"/></mxCell>\n<mxCell id=\"search_label\" value=\"&lt;b&gt;Azure AI Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;ベクトル検索 / RAG&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"630\" y=\"430\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"iq\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Cognitive_Services.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"416\" y=\"450\" width=\"68\" height=\"48\" as=\"geometry\"/></mxCell>\n<mxCell id=\"iq_label\" value=\"&lt;b&gt;Foundry IQ / File Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;引用付き知識統合&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"340\" y=\"500\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"docint\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Cognitive_Services_Decisions.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"128\" y=\"380\" width=\"68\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"docint_label\" value=\"&lt;b&gt;Document Intelligence&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;帳票・契約書の構造抽出&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"50\" y=\"450\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"cu\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Computer_Vision.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"132\" y=\"180\" width=\"68\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"cu_label\" value=\"&lt;b&gt;Content Understanding&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;マルチモーダル文書解析&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"60\" y=\"250\" width=\"220\" height=\"40\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e1\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"models\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e2\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"agent\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e3\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"search\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e4\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"iq\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e5\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"docint\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"e6\" edge=\"1\" parent=\"1\" source=\"hub\" target=\"cu\" style=\"endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n</root>\n</mxGraphModel>\n</diagram>\n</mxfile>", "highlight": "#0078D4", "nav": false, "resize": true, "toolbar": "zoom", "edit": "_blank"}'></div>
+    <div class="diagram-caption">図1：Microsoft Foundryを中心に置いた、Azure AIサービスの俯瞰マップ</div>
+  </div>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">企業案件で実際によく組み合わされる機能</span>
+    社内ナレッジ検索なら <strong>Foundry Agent Service ＋ Foundry IQ ＋ Azure AI Search</strong>。請求書・契約書の自動処理なら <strong>Document Intelligence ＋ Foundry Models</strong>。動画や図表入りドキュメントの読み解きなら <strong>Content Understanding</strong>。これらが「BtoB業務AI」の中核ラインナップです。
+  </div>
+
+  <div class="callout callout-gray">
+    <span class="callout-label">補足：呼び方の変更について</span>
+    Azure OpenAI、Azure AI Studio、Azure AI Foundryといった旧称はMicrosoft Foundryに統合されました。Assistants API（Threads／Messages／Runs）はResponses API（Conversations／Items／Responses）へ移行しています。古いドキュメントを参照する際はご注意ください。
+  </div>
+</section>
+
+<!-- ==================== SECTION 3 ==================== -->
+<section class="section" id="section-3">
+  <span class="section-number">No. 03</span>
+  <h2 class="section-title">Azureならではの装備</h2>
+  <p class="section-subtitle">企業のAIが乗ってくる「業務基準」の中身</p>
+
+  <p class="section-lead">
+    BtoB大企業がAzureを選ぶ最大の理由は、ChatGPT直叩きやその他のAIサービスでは標準では揃えられない、<strong>「業務に乗せられるための装備」がAzureには標準で揃っている</strong>からです。具体的には3つあります。
+  </p>
+
+  <h3>① 閉域網で外に出さない構成が組める</h3>
+  <p>
+    <strong>Private Endpoint</strong>と<strong>VNet統合</strong>を使うと、Foundryやストレージへのトラフィックを企業のVNet内に閉じ込められます。インターネット経由の通信を一切させずに動かせるため、機密情報や個人情報を扱う案件でもそのまま乗せられます。
+  </p>
+
+  <h3>② Microsoft Entra IDによる認証認可がそのまま使える</h3>
+  <p>
+    社員のアカウントをそのままAIアプリの認証にも使えます。<strong>RBAC</strong>でAzureリソース単位の権限を細かく設定でき、サービスプリンシパルやマネージドIDを使えばアプリ側からのトークン取得も自動化できます。社内ID基盤との統合がデフォルトで効くのがAzureの強みです。
+  </p>
+
+  <h3>③ 監視・コスト管理が一気通貫で動く</h3>
+  <p>
+    <strong>Azure Monitor</strong>でメトリック収集、<strong>メトリックアラート</strong>で異常検知、<strong>Action Group</strong>でメール／Logic Apps／Webhook等への通知振り分けが標準で組めます。<strong>Cost Management</strong>と組み合わせれば、トークン使用量の急増もコスト超過もリアルタイムで把握できます。
+  </p>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">この装備があるかどうかが「業務で使えるAI」の分かれ目</span>
+    PoCで終わるAIと、実際にお客様の業務に乗るAIの差は、モデルの賢さではなくこの3つの装備が揃っているかどうかです。Azureはこの3つが「最初から揃っている」ことに価値があります。
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-label">本資料の家族用AIエージェントでも実装しています</span>
+    後半で紹介する家族用AIには、Entra ID認証（Static Web Apps Easy Auth）／メトリックアラート（トークン使用量超過の検知）／Logic AppによるLINE通知 を組み込んでいます。最小スケールでも同じ装備が一通り使えます。
+  </div>
+</section>
+
+<!-- ==================== SECTION 4 ==================== -->
+<section class="section" id="section-4">
+  <span class="section-number">No. 04</span>
+  <h2 class="section-title">BtoB業務AIで使われている機能・ユースケース</h2>
+  <p class="section-subtitle">大企業のAI予算は、ここに流れています</p>
+
+  <p class="section-lead">
+    実際にBtoBの現場でよく見るAI活用は、大きく3つのパターンに分かれます。どれもMicrosoft Foundryの範囲内で実装可能です。
+  </p>
+
+  <h3>① 社内ドキュメント検索（RAG）</h3>
+  <p>
+    社内規程・マニュアル・過去案件資料などをナレッジ化し、自然言語で問い合わせるパターン。<strong>Foundry Agent Service ＋ Foundry IQ</strong>、もしくは<strong>Foundry ＋ Azure AI Search</strong>で組みます。BtoB案件のAIアプリで最も多いユースケースです。
+  </p>
+
+  <h3>② エージェント自動処理</h3>
+  <p>
+    社内システムや外部APIをツールとして繋ぎ、AIが判断しながら一連の業務を自動で処理するパターン。<strong>Foundry Agent ServiceのTool Catalog（1,400以上のツール接続が可能）</strong>を使い、複数エージェントのオーケストレーションも組めます。問い合わせ対応・申請ワークフロー・データ調査などで使われます。
+  </p>
+
+  <h3>③ 文書解析・読み解き</h3>
+  <p>
+    請求書・契約書・申請書などの構造データ抽出、画像や動画の内容理解。<strong>Document Intelligence</strong>で帳票を構造化、<strong>Content Understanding</strong>でマルチモーダル文書（図表混在のPDFや動画）を読み解きます。バックオフィス自動化の主戦場です。
+  </p>
+
+  <div class="callout callout-orange">
+    <span class="callout-label">繰り返しお伝えしたいこと</span>
+    これらは大企業のBtoB案件で<strong>実際に予算が動いている</strong>領域です。同じ「AIに触れるエンジニア」でも、Azureでこれらを組める人材は希少で、単価帯が一段上を狙える構造になっています。今このスキルを身につけておく価値は、十分に投資対効果に見合うはずです。
+  </div>
+</section>
+
+<!-- ==================== SECTION 5 ==================== -->
+<section class="section" id="section-5">
+  <span class="section-number">No. 05</span>
+  <h2 class="section-title">アプリ構成パターン ─ どう組み合わせるか</h2>
+  <p class="section-subtitle">バックエンド／フロントエンドの選び方と、AI部品の組み合わせ方</p>
+
+  <p class="section-lead">
+    AIアプリは、フロントエンドとバックエンドのホスティング選択肢、そしてAI部品（プロンプト・インデックス・エージェント）の組み合わせ次第で、構成が大きく変わります。ユースケースに合わせて使い分けるのが基本です。
+  </p>
+
+  <p class="section-label">バックエンドの選択肢</p>
+
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ic">AS</div>
+      <div>
+        <div class="nm">App Service</div>
+        <div>常時稼働Webアプリ向け</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">FN</div>
+      <div>
+        <div class="nm">Azure Functions</div>
+        <div>イベント駆動・短時間処理</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">CA</div>
+      <div>
+        <div class="nm">Container Apps</div>
+        <div>コンテナベースのスケーリング</div>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    <strong>App Service</strong>は社内向けの常時稼働Webアプリに、<strong>Functions</strong>はSWAと組み合わせたサーバーレスAPIや、ファイル投入をトリガーにした処理に向きます。<strong>Container Apps</strong>はDocker前提のチームや、より柔軟なスケーリングが必要な場合に選ばれます。
+  </p>
+
+  <p class="section-label">フロントエンドの選択肢</p>
+
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="ic">SWA</div>
+      <div>
+        <div class="nm">Static Web Apps</div>
+        <div>Reactなどの静的SPA向け</div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="ic">AS</div>
+      <div>
+        <div class="nm">App Service (Web)</div>
+        <div>サーバーサイドレンダリング向け</div>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    軽量なフロントエンドや個人開発・小規模アプリは<strong>Static Web Apps</strong>。Easy Auth（Entra ID連携）が標準装備で、認証付きアプリが追加実装ゼロで作れます。サーバーサイドレンダリング（Next.jsのSSRなど）が必要な大規模アプリは<strong>App Service</strong>を選びます。
+  </p>
+
+  <p class="section-label">AI部品の組み合わせパターン</p>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">代表的な組み合わせ</span>
+    <ul>
+      <li><strong>シンプルなRAGアプリ</strong>：SWA → Functions → Foundry Agent + File Search（最小構成）</li>
+      <li><strong>規模を持つRAGアプリ</strong>：App Service → Foundry Agent + Azure AI Search（独立検索）</li>
+      <li><strong>エージェント自動処理</strong>：Container Apps → Foundry Agent Service（複数エージェント・Tool Catalog経由で外部API連携）</li>
+      <li><strong>文書処理パイプライン</strong>：Blob Storage → Functions → Document Intelligence → Foundry Models（要約・分類）</li>
+    </ul>
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-label">本資料の家族用AIエージェントは「最小構成」を選択</span>
+    後半で紹介する実例は <strong>Static Web Apps（フロント／認証） + Foundry Agent Service（バック／File Search）</strong> の最小スタックです。バックエンドコードはSWA Managed Functions（Node.js）でプロキシだけ書いている形になります。
+  </div>
+</section>
+
+<!-- ==================== SECTION 6 ==================== -->
+<section class="section" id="section-6">
+  <span class="section-number">No. 06</span>
+  <h2 class="section-title">自分で試す最小構成</h2>
+  <p class="section-subtitle">無料〜低価格で動かせる、入口の最短ルート</p>
+
+  <p class="section-lead">
+    Azure AIは「触ってみないと分からない」のが本音です。月数百円規模で動かせる最小スタックを以下にまとめました。所要時間は2〜3時間ほどです。
+  </p>
+
+  <p class="section-label">最小スタック構築の流れ</p>
+
+  <ol>
+    <li><strong>Microsoft Foundryプロジェクトを作成</strong>（Azure Portal → Microsoft Foundry → 新規プロジェクト）</li>
+    <li><strong>モデルをデプロイ</strong>（gpt-5-mini など。Global Standard・TPM 10K で十分）</li>
+    <li><strong>エージェントを作成</strong>（Foundry Agent Service。指示文と利用ツールを設定）</li>
+    <li><strong>ナレッジを登録</strong>（File Searchに必要なPDFをアップロード）</li>
+    <li><strong>Static Web Appsをデプロイ</strong>（GitHub連携 → Reactフロント＋Functionsバック）</li>
+    <li><strong>SWA Easy Authを有効化</strong>（Microsoftアカウントによる認証）</li>
+    <li><strong>サービスプリンシパルを作成</strong>してSWA環境変数に設定（Foundry認証用）</li>
+  </ol>
+
+  <p>
+    手順の詳細はFoundry公式ドキュメント（<a href="https://learn.microsoft.com/azure/foundry/" target="_blank" rel="noopener">learn.microsoft.com/azure/foundry/</a>）と、後述するサンプルリポジトリのREADMEに記載しています。各ステップで詰まりやすい認証周りの落とし穴も併せて書いてあります。
+  </p>
+
+  <div class="callout callout-orange">
+    <span class="callout-label">ハマりがちなポイント</span>
+    <strong>Foundry Agent ServiceはAPIキー認証に対応していません</strong>。SWA FunctionsからFoundryを呼ぶときは、サービスプリンシパル（クライアントID＋シークレット）でEntra IDからトークンを取得し、Bearerヘッダで渡す必要があります。これを知らないと数時間ハマります（私も最初ハマりました）。
+  </div>
+
+  <div class="callout callout-gray">
+    <span class="callout-label">料金の目安</span>
+    Static Web Apps Free（無料）／Foundry Models（gpt-5-mini）：使った分だけ／File Search（Foundry IQ）：使った分だけ／Logic Apps Consumption：月4,000アクションまで無料。家族数人での利用なら<strong>月10円〜数十円</strong>に収まります。
+  </div>
+</section>
+
+<!-- ==================== SECTION 7 ==================== -->
+<section class="section" id="section-7">
+  <span class="section-number">No. 07</span>
+  <h2 class="section-title">実例：家族用AIエージェントを約2時間で組んでみた</h2>
+  <p class="section-subtitle">家族の保険提案書PDFを聞ける、実用最小構成のアプリ</p>
+
+  <p class="section-lead">
+    保険の提案書って分厚くて読まないですよね。「いつから保障が始まる？」「がん診断時の給付金額は？」をいちいち探すのは面倒なので、提案書のPDFをFoundryに食わせて、家族でLINEのように質問できるアプリを作りました。<strong>構築時間は約2時間、月のコストは10円以下</strong>です。
+  </p>
+
+  <p class="section-label">構成図</p>
+
+  <div class="diagram-box">
+    <div class="mxgraph" style="max-width:100%;background:#ffffff;border-radius:8px;" data-mxgraph='{"xml": "<mxfile host=\"app.diagrams.net\" modified=\"2026-05-06T13:00:00.000Z\" agent=\"claude\" version=\"24.0.0\" type=\"device\">\n<diagram name=\"Family AI Agent\" id=\"family-ai\">\n<mxGraphModel dx=\"1200\" dy=\"800\" grid=\"0\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"1000\" pageHeight=\"640\" math=\"0\" shadow=\"0\" adaptiveColors=\"auto\">\n<root>\n<mxCell id=\"0\"/>\n<mxCell id=\"1\" parent=\"0\"/>\n<mxCell id=\"title\" value=\"図2：家族用AIエージェントの構成（最小構成）\" style=\"text;html=1;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"80\" y=\"20\" width=\"840\" height=\"30\" as=\"geometry\"/></mxCell>\n<mxCell id=\"entra\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/identity/Entra_ID_Protection.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"220\" y=\"80\" width=\"68\" height=\"60\" as=\"geometry\"/></mxCell>\n<mxCell id=\"entra_label\" value=\"&lt;b&gt;Microsoft Entra ID&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;ユーザー認証&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"160\" y=\"145\" width=\"190\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"user\" value=\"家族\" style=\"rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f5f9;strokeColor=#94a3b8;fontSize=12;fontStyle=1;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"120\" y=\"220\" width=\"60\" height=\"60\" as=\"geometry\"/></mxCell>\n<mxCell id=\"user_label\" value=\"&lt;b&gt;家族&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;ブラウザ&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"80\" y=\"285\" width=\"140\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"swa\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/preview/Static_Apps.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"270\" y=\"225\" width=\"70\" height=\"56\" as=\"geometry\"/></mxCell>\n<mxCell id=\"swa_label\" value=\"&lt;b&gt;Static Web Apps&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;フロント＋Easy Auth&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"220\" y=\"285\" width=\"170\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"func\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/compute/Function_Apps.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"446\" y=\"225\" width=\"68\" height=\"60\" as=\"geometry\"/></mxCell>\n<mxCell id=\"func_label\" value=\"&lt;b&gt;Functions&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;APIプロキシ（SP認証）&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"395\" y=\"290\" width=\"170\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"foundry\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/AI_Studio.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"616\" y=\"221\" width=\"64\" height=\"68\" as=\"geometry\"/></mxCell>\n<mxCell id=\"foundry_label\" value=\"&lt;b&gt;Microsoft Foundry&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;Agent + gpt-5-mini&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"560\" y=\"294\" width=\"180\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"files\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Cognitive_Services.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"788\" y=\"231\" width=\"68\" height=\"48\" as=\"geometry\"/></mxCell>\n<mxCell id=\"files_label\" value=\"&lt;b&gt;File Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;保険提案書PDF（匿名化済）&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"730\" y=\"285\" width=\"190\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"alert\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/management_governance/Alerts.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"446\" y=\"465\" width=\"67\" height=\"56\" as=\"geometry\"/></mxCell>\n<mxCell id=\"alert_label\" value=\"&lt;b&gt;Azure Monitor アラート&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;トークン使用量超過を検知&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"385\" y=\"525\" width=\"190\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"logic\" value=\"\" style=\"image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/integration/Logic_Apps.svg;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"616\" y=\"465\" width=\"67\" height=\"52\" as=\"geometry\"/></mxCell>\n<mxCell id=\"logic_label\" value=\"&lt;b&gt;Logic Apps&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;通知ワークフロー&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"560\" y=\"525\" width=\"180\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"line\" value=\"LINE\" style=\"rounded=1;whiteSpace=wrap;html=1;fillColor=#06C755;strokeColor=#06C755;fontColor=#ffffff;fontStyle=1;fontSize=14;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"800\" y=\"465\" width=\"80\" height=\"56\" as=\"geometry\"/></mxCell>\n<mxCell id=\"line_label\" value=\"&lt;b&gt;LINE&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;Messaging API でPush&lt;/span&gt;\" style=\"text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;\" vertex=\"1\" parent=\"1\"><mxGeometry x=\"740\" y=\"525\" width=\"200\" height=\"32\" as=\"geometry\"/></mxCell>\n<mxCell id=\"ef1\" edge=\"1\" parent=\"1\" source=\"user\" target=\"swa\" style=\"endArrow=classic;html=1;strokeColor=#0078D4;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"ef2\" edge=\"1\" parent=\"1\" source=\"swa\" target=\"func\" style=\"endArrow=classic;html=1;strokeColor=#0078D4;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"ef3\" edge=\"1\" parent=\"1\" source=\"func\" target=\"foundry\" style=\"endArrow=classic;html=1;strokeColor=#0078D4;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"ef4\" edge=\"1\" parent=\"1\" source=\"foundry\" target=\"files\" style=\"endArrow=classic;html=1;strokeColor=#0078D4;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"ea1\" edge=\"1\" parent=\"1\" source=\"entra\" target=\"swa\" style=\"endArrow=classic;html=1;strokeColor=#9333ea;strokeWidth=1.5;dashed=1;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"em1\" edge=\"1\" parent=\"1\" source=\"foundry\" target=\"alert\" style=\"endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=1.5;dashed=1;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"em2\" edge=\"1\" parent=\"1\" source=\"alert\" target=\"logic\" style=\"endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n<mxCell id=\"em3\" edge=\"1\" parent=\"1\" source=\"logic\" target=\"line\" style=\"endArrow=classic;html=1;strokeColor=#dc2626;strokeWidth=2;\"><mxGeometry relative=\"1\" as=\"geometry\"/></mxCell>\n</root>\n</mxGraphModel>\n</diagram>\n</mxfile>", "highlight": "#0078D4", "nav": false, "resize": true, "toolbar": "zoom", "edit": "_blank"}'></div>
+    <div class="diagram-caption">図2：家族用AIエージェントの全体構成</div>
+  </div>
+
+  <p class="section-label">デモ動画</p>
+
+  <div class="loom-wrap">
+    <iframe src="https://www.loom.com/embed/3bc8f9025a664401b6941fe4d386a056"
+      frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+  </div>
+  <p style="font-size: 13px; color: var(--text-muted); margin-top: 0;">画面右下のフルスクリーンボタンで拡大再生できます。</p>
+
+  <p class="section-label">月額コストの内訳</p>
+
+  <table class="cost-table">
+    <thead>
+      <tr><th>リソース</th><th>プラン</th><th class="num">目安／月</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Static Web Apps</td><td>Free</td><td class="num">¥0</td></tr>
+      <tr><td>Microsoft Foundry（gpt-5-mini）</td><td>従量課金</td><td class="num">¥0〜数円</td></tr>
+      <tr><td>File Search（Foundry IQ）</td><td>従量課金</td><td class="num">¥0〜数円</td></tr>
+      <tr><td>メトリックアラート（1ルール）</td><td>従量</td><td class="num">約¥15</td></tr>
+      <tr><td>Logic Apps Consumption</td><td>従量（無料枠内）</td><td class="num">¥0</td></tr>
+      <tr><td>Action Group</td><td>無料</td><td class="num">¥0</td></tr>
+      <tr><td><strong>合計</strong></td><td>※家族数人の利用</td><td class="num"><strong>月10円〜20円</strong></td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-label">使いすぎ防止のアラート構成</p>
+
+  <p>
+    トークンが急に消費された場合のために、<strong>Azure Monitorのメトリックアラート → Action Group → Logic Apps → LINE Messaging API</strong> という流れで自分のLINEに通知を飛ばすようにしてあります。Logic Appsは無料枠内（月4,000アクション）に収まるよう、発火時のみ動作する条件分岐を入れています。
+  </p>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">サンプルコード／GitHubリポジトリ</span>
+    フロントエンド（React + Vite + Framer Motion）とSWA設定（staticwebapp.config.json）の実物は、サンプルリポジトリで公開しています。READMEに画面のスクリーンショットを貼ってありますので、雰囲気を掴んでから試したい方はそちらをご覧ください。<br>
+    → <a href="https://github.com/syam-gritio/foundry-agent-frontend-sample" target="_blank" rel="noopener">github.com/syam-gritio/foundry-agent-frontend-sample</a>
+  </div>
+
+  <div class="callout callout-yellow">
+    <span class="callout-label">作るのは2時間ですが、効用は長期</span>
+    家族から「保険のあれって何だっけ？」と聞かれたとき、即答できるのはかなり快適です。これに限らず、家計簿マニュアル・住宅ローン契約書・取扱説明書・社内規程など、「分厚いけどたまに参照する文書」は全部このパターンに乗ります。
+  </div>
+</section>
+
+<!-- ==================== SECTION 8 ==================== -->
+<section class="section" id="section-8">
+  <span class="section-number">No. 08</span>
+  <h2 class="section-title">私のキャッチアップ術</h2>
+  <p class="section-subtitle">毎日の流れと、業務にどう活かしていくか</p>
+
+  <p class="section-lead">
+    Azure AIは進化が速く、2025〜2026年だけでも大きな改名や統合が起こっています。私は次の4ステップで「速さ」と「正確さ」を両立させています。
+  </p>
+
+  <h3>STEP 1：GA／Previewのアナウンスを受け取る</h3>
+  <p>
+    Microsoft公式の<strong>Azure Updates</strong>と<strong>Microsoft 365 Roadmap</strong>のRSSをチェック。X（旧Twitter）でMicrosoft関係者やAzure系のコミュニティをフォローしておくと、GAタイミングが流れてきます。
+  </p>
+
+  <h3>STEP 2：Microsoft Learnで概要を読む</h3>
+  <p>
+    新サービス・新機能は<a href="https://learn.microsoft.com/" target="_blank" rel="noopener">learn.microsoft.com</a>に必ずドキュメントが立ちます。「What is 〜」「Quickstart」「Architecture」の3つを順に読めば、何ができるか・どう使うか・どこに位置付けられるかが10分で掴めます。
+  </p>
+
+  <h3>STEP 3：料金を確認する</h3>
+  <p>
+    新サービスはまず<strong>Azure料金計算ツール</strong>か公式の<a href="https://azure.microsoft.com/pricing/" target="_blank" rel="noopener">Pricing</a>ページで料金を確認します。これをやっておかないと「触ったら高そう」で手が止まりがちなので、最初に「最小構成だと月いくら」を把握するのが大事です。
+  </p>
+
+  <h3>STEP 4：Azureポータルで実際に触る</h3>
+  <p>
+    最後に必ず手で動かします。<strong>個人のAzureサブスクリプション</strong>か、<strong>会社の検証環境</strong>を借りて、最小構成でデプロイ→画面確認→削除、までやります。読むだけでは絶対に身につかないので、ここまでやってはじめて「使える」レベルになります。
+  </p>
+
+  <div class="callout callout-blue">
+    <span class="callout-label">前作のキャッチアップ用Webサイト集と合わせて読むと効率が出ます</span>
+    Azureに関する情報源・公式ドキュメント・コミュニティの一覧は、別資料「<strong>しゃま愛用／実務のためのAzure関連Webサイト集</strong>」にまとめています。LINE登録時の特典として配布していますので、合わせてご活用ください。
+  </div>
+</section>
+
+<!-- ==================== FOOTER BANNER (SKYLINE) ==================== -->
+<div class="footer-banner">
+  <img src="assets/banner_skyline.png" alt="">
+</div>
+
+<!-- ==================== SITE FOOTER ==================== -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <h3 class="footer-headline">
+      手を動かした分だけ、<br>
+      <span class="accent">Azureは身近になる。</span>
+    </h3>
+
+    <p class="footer-text">
+      本資料では、構成と考え方の紹介に絞りました。最近は生成AIのおかげで、こうした検証はとてもしやすくなっています。それでも、実際にAzureポータルで手を動かして、認証で詰まったり、料金が想定外に出たり、エージェントが意図しない返答をしたりする体験には、置き換えられない価値があります。
+    </p>
+
+    <p class="footer-text">
+      生成AIにIaCコードを書かせたり、構成を提案させたり、楽をする手段はいくらでもありますが、地道に画面で動かしてみる作業こそが、案件で使えるレベルへの一番の近道です。本資料はあえて構成のみの紹介としました。公式ドキュメントを参照しながら、ご自身の業務に当てはめて、ぜひ手を動かしてみてください。
+    </p>
+
+    <div class="tips-card">
+      <h4>HANDS-ON TIPS</h4>
+      <div class="tips-title">"動かす"を最大化する3つのコツ</div>
+      <ol>
+        <li>いきなり完璧を目指さない。まずは「動いた」を体感してから機能を足す</li>
+        <li>詰まったらエラーメッセージをそのまま検索／生成AIに投げる</li>
+        <li>作ったらSNSや日記に残す。1ヶ月後の自分が一番の読者になります</li>
+      </ol>
+    </div>
+
+    <div class="contact-card">
+      <h4>CONTACT</h4>
+      <div class="contact-title">質問・感想・キャリア相談はこちらへ</div>
+      <p>Azure学習やキャリア相談は、公式LINEまたはX（旧Twitter）のDMからどうぞ。一通一通、私が直接お返事します。</p>
+      <div class="contact-grid">
+        <a href="https://lin.ee/" target="_blank" rel="noopener" class="contact-item line" style="text-decoration:none; color: inherit;">
+          <div class="ic">L</div>
+          <div class="nm">公式LINE</div>
+          <div class="desc">登録特典付き／引き続きご相談いただけます</div>
+        </a>
+        <a href="https://x.com/syam_nihick" target="_blank" rel="noopener" class="contact-item x" style="text-decoration:none; color: inherit;">
+          <div class="ic">𝕏</div>
+          <div class="nm">X (Twitter) DM</div>
+          <div class="desc">@syam_nihick</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-author">
+      <img src="assets/character_syama.png" alt="しゃま">
+      <div>
+        <div class="footer-author-name">しゃま <span style="font-weight:400; color: var(--text-muted); font-size:12px;">／ フリーランス クラウド・インフラ・DevOpsエンジニア</span></div>
+        <div class="footer-author-links">
+          <span class="label">Web</span> <a href="https://syam-gritio.com" target="_blank" rel="noopener">syam-gritio.com</a><br>
+          <span class="label">X (DM)</span> <a href="https://x.com/syam_nihick" target="_blank" rel="noopener">@syam_nihick</a><br>
+          <span class="label">Zenn</span> <a href="https://zenn.dev/gritio28tech" target="_blank" rel="noopener">zenn.dev/gritio28tech</a>　
+          <span class="label">Note</span> <a href="https://note.com/syam_grit" target="_blank" rel="noopener">note.com/syam_grit</a>　
+          <span class="label">GitHub</span> <a href="https://github.com/SyamGRITio" target="_blank" rel="noopener">github.com/SyamGRITio</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="created-mark">
+      &gt; created on 2026.05 _
+    </div>
+  </div>
+</footer>
+
+<script type="text/javascript" src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+</body>
+</html>
