@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" modified="2026-05-06T13:00:00.000Z" agent="claude" version="24.0.0" type="device">
+<diagram name="Foundry Service Map" id="foundry-map">
+<mxGraphModel dx="1200" dy="800" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="600" math="0" shadow="0" adaptiveColors="auto">
+<root>
+<mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+<mxCell id="title" value="図1：Microsoft Foundry を中心に置いた Azure AI サービスマップ" style="text;html=1;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="80" y="20" width="740" height="30" as="geometry"/></mxCell>
+<mxCell id="hub" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/AI_Studio.svg;" vertex="1" parent="1"><mxGeometry x="416" y="270" width="68" height="68" as="geometry"/></mxCell>
+<mxCell id="hub_label" value="&lt;b&gt;Microsoft Foundry&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:11px;color:#475569&quot;&gt;統合プラットフォーム&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=12;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="340" y="345" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="models" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Azure_OpenAI.svg;" vertex="1" parent="1"><mxGeometry x="416" y="100" width="68" height="68" as="geometry"/></mxCell>
+<mxCell id="models_label" value="&lt;b&gt;Foundry Models&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;gpt-5系・Llama・他&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="340" y="170" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="agent" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Bot_Services.svg;" vertex="1" parent="1"><mxGeometry x="700" y="180" width="68" height="68" as="geometry"/></mxCell>
+<mxCell id="agent_label" value="&lt;b&gt;Foundry Agent Service&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;エージェント実行・Tool Catalog&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="630" y="250" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="search" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/app_services/Search_Services.svg;" vertex="1" parent="1"><mxGeometry x="704" y="380" width="68" height="49" as="geometry"/></mxCell>
+<mxCell id="search_label" value="&lt;b&gt;Azure AI Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;ベクトル検索 / RAG&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="630" y="430" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="iq" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Cognitive_Services.svg;" vertex="1" parent="1"><mxGeometry x="416" y="450" width="68" height="48" as="geometry"/></mxCell>
+<mxCell id="iq_label" value="&lt;b&gt;Foundry IQ / File Search&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;引用付き知識統合&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="340" y="500" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="docint" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Cognitive_Services_Decisions.svg;" vertex="1" parent="1"><mxGeometry x="128" y="380" width="68" height="68" as="geometry"/></mxCell>
+<mxCell id="docint_label" value="&lt;b&gt;Document Intelligence&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;帳票・契約書の構造抽出&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="50" y="450" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="cu" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Computer_Vision.svg;" vertex="1" parent="1"><mxGeometry x="132" y="180" width="68" height="68" as="geometry"/></mxCell>
+<mxCell id="cu_label" value="&lt;b&gt;Content Understanding&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;color:#475569&quot;&gt;マルチモーダル文書解析&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=top;fontSize=11;fontColor=#0a0e27;" vertex="1" parent="1"><mxGeometry x="60" y="250" width="220" height="40" as="geometry"/></mxCell>
+<mxCell id="e1" edge="1" parent="1" source="hub" target="models" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" edge="1" parent="1" source="hub" target="agent" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e3" edge="1" parent="1" source="hub" target="search" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" edge="1" parent="1" source="hub" target="iq" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e5" edge="1" parent="1" source="hub" target="docint" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e6" edge="1" parent="1" source="hub" target="cu" style="endArrow=none;html=1;strokeColor=#0078D4;strokeWidth=1.5;"><mxGeometry relative="1" as="geometry"/></mxCell>
+</root>
+</mxGraphModel>
+</diagram>
+</mxfile>
